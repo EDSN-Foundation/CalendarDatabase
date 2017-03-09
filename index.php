@@ -25,7 +25,7 @@ and open the template in the editor.
             </ul>
         </div>
         
-        <button class="accordion">B</button>
+<!--        <button class="accordion">B</button>
         <div class="panel">
             <ul>
                 <li>Button</li>
@@ -39,24 +39,7 @@ and open the template in the editor.
                 <li>Class</li>
                 <li>Carrolling</li>
             </ul>
-        </div>
-        
-        <script>
-            var acc = document.getElementsByClassName("accordion");
-            var i;
-            
-            for(i=0; i<acc.length; i++) {
-                acc[i].onclick = function() {
-                    this.classList.toggle("active");
-                    var panel = this.nextElementSibling;
-                    if(panel.style.display === "block") {
-                        panel.style.display = "none";
-                    } else {
-                        panel.style.display = "block";
-                    }
-                }
-            }
-        </script>
+        </div>-->
         
         <?php
         $servername = "localhost";
@@ -68,108 +51,101 @@ and open the template in the editor.
         $connect = mysqli_connect($servername, $username, $password);
         
         // Check connection
-        if ($connect->connect_error)
+        if ($connect->connect_error) {
             die("Connection failed: " . mysqli_error($connect));
-        echo "Connected successfully <br>";
+        }
         
         // Create database
         $sql = "CREATE DATABASE IF NOT EXISTS myDB";
-        if(mysqli_query($connect, $sql))
-            echo "Database created successfully <br>";
-        else
+        if(!(mysqli_query($connect, $sql))) {
             echo "Error creating datababse: " . mysqli_error($connect) . "<br>";
+        }
         
         // Create connection
         $connect = mysqli_connect($servername, $username, $password, $dbname);
+        
         // Check connection
-        if (!$connect) 
+        if (!$connect) {
             die("Connection failed: " . mysqli_connect_error());
+        }
         
         $sql = "CREATE TABLE IF NOT EXISTS PHOTO(
-        PhotoID int(16) NOT NULL,
+        PhotoID int NOT NULL AUTO_INCREMENT,
         Title varchar(64),
         Author varchar(64),
         Date DATE,
         Event varchar(64),
         EventType varchar(64),
-        Link varchar(256) NOT NULL
+        Link varchar(256) NOT NULL,
+        PRIMARY KEY(PhotoID)
         )";
         
-        if(mysqli_query($connect, $sql))
-            echo "Table PHOTO created successfully <br>";
-        else
+        if(!(mysqli_query($connect, $sql))) {
             echo "Error creating table PHOTO: " . mysqli_error($connect) . "<br>";
+        }
         
         $sql = "CREATE TABLE IF NOT EXISTS TAG(
-        PhotoID int(16) NOT NULL,
-        Tag varchar(64)
+        PhotoID int NOT NULL AUTO_INCREMENT,
+        Tag varchar(64),
+        PRIMARY KEY(PhotoID)
         )";
         
-        if(mysqli_query($connect, $sql))
-            echo "Table TAG created successfully <br>";
-        else
+        if(!(mysqli_query($connect, $sql))) {
             echo "Error creating table TAG: " . mysqli_error($connect) . "<br>";
+        }
         
         // Clear table each run for testing purposes
         $sql = "TRUNCATE TABLE PHOTO";
-        if(mysqli_query($connect, $sql))
-            echo "PHOTO table cleared <br>";
-        else
+        if(!(mysqli_query($connect, $sql))) {
             echo "Failed to clear PHOTO table: " . mysqli_error($connect) . "<br>";
+        }
         
         $sql = "TRUNCATE TABLE TAG";
-        if(mysqli_query($connect, $sql))
-            echo "TAG table cleared <br>";
-        else
+        if(!(mysqli_query($connect, $sql))) {
             echo "Failed to clear TAG table: " . mysqli_error($connect) . "<br>";
+        }
         
         // Insert a test record
-        $sql = "INSERT INTO PHOTO(PhotoID, Title, Author, Date, Event, EventType, Link)
-            VALUES ('0', 'Cool Picture', 'John', '20170305', 'Fun Event', 'test', 'nbproject/databaseimages/peanuts.jpg')";
-        if(mysqli_query($connect, $sql))
-            echo "New record successfully inserted <br>";
-        else
+        $sql = "INSERT INTO PHOTO(Title, Author, Date, Event, EventType, Link)
+            VALUES ('Cool Picture', 'John', '20170305', 'Fun Event', 'test', 'nbproject/databaseimages/peanuts.jpg')";
+        if(!(mysqli_query($connect, $sql))) {
             echo "Error inserting record: " . mysqli_error($connect) . "<br>";
+        }
         {
             // Insert tags
-            $sql = "INSERT INTO TAG(PhotoID, Tag)
-                VALUES ('0', '#fun')";
-            if(mysqli_query($connect, $sql))
-                echo "New tag successfully inserted <br>";
-            else
+            $sql = "INSERT INTO TAG(Tag)
+                VALUES ('#fun')";
+            if(!(mysqli_query($connect, $sql))) {
                 echo "Error inserting tag: " . mysqli_error($connect) . "<br>";
+            }
             
-            $sql = "INSERT INTO TAG(PhotoID, Tag)
-                VALUES ('0', '#cool')";
-            if(mysqli_query($connect, $sql))
-                echo "New tag successfully inserted <br>";
-            else
+            $sql = "INSERT INTO TAG(Tag)
+                VALUES ('#cool')";
+            if(!(mysqli_query($connect, $sql))) {
                 echo "Error inserting tag: " . mysqli_error($connect) . "<br>";
+            }
         }
             
         // Insert a test record
-        $sql = "INSERT INTO PHOTO(PhotoID, Title, Author, Date, Event, EventType, Link)
-            VALUES ('01', 'Nice Picture', 'Joe', '', 'Fun Event', 'test', 'http//:DifferentLinkHere')";
-        if(mysqli_query($connect, $sql))
-            echo "New record successfully inserted <br>";
-        else
+        $sql = "INSERT INTO PHOTO(Title, Author, Date, Event, EventType, Link)
+            VALUES ('Nice Picture', 'Joe', '', 'Fun Event', 'test', 'http//:DifferentLinkHere')";
+        if(!(mysqli_query($connect, $sql))) {
             echo "Error inserting record: " . mysqli_error($connect) . "<br>";
+        }
         
         // Insert a test record
-        $sql = "INSERT INTO PHOTO(PhotoID, Title, Author, Date, Event, EventType, Link)
-            VALUES ('003', 'Awesome Picture', '', '', 'Amazing Event', '', 'http//:AnotherLinkHere')";
-        if(mysqli_query($connect, $sql))
-            echo "New record successfully inserted <br>";
-        else
+        $sql = "INSERT INTO PHOTO(Title, Author, Date, Event, EventType, Link)
+            VALUES ('Awesome Picture', '', '', 'Amazing Event', '', 'http//:AnotherLinkHere')";
+        if(!(mysqli_query($connect, $sql))) {
             echo "Error inserting record: " . mysqli_error($connect) . "<br>";
+        }
         {
             // Insert tags
-            $sql = "INSERT INTO TAG(PhotoID, Tag)
-                VALUES ('3', '#fun')";
-            if(mysqli_query($connect, $sql))
-                echo "New tag successfully inserted <br>";
-            else
+            $sql = "INSERT INTO TAG(Tag)
+                VALUES ('#fun')";
+            if(!(mysqli_query($connect, $sql))) {
                 echo "Error inserting tag: " . mysqli_error($connect) . "<br>";
+            }
         }
 
         // List distinct event names
@@ -178,29 +154,30 @@ and open the template in the editor.
         
         if (mysqli_num_rows($result) > 0)    
         {
-            echo "<ul>";
             while($row = $result->fetch_assoc())
             {
-                echo "<li>";
-                echo "<div class=\"collapsible-header\" >" . $row['Event'] . "</div>" ; //prints event name
+                echo "<button class=\"accordion\">" . $row['Event'] . "</button>"; //Prints event name
                 
                 // grab table values from distinct event
                 $sql2 = "SELECT * FROM PHOTO WHERE Event='" . $row['Event'] . "'";
                 $result2 = mysqli_query($connect, $sql2);
                 if (mysqli_num_rows($result2) > 0)    
                 {
+                    echo "<div class='panel'>";
                     echo "<ul>";
                     while($row2 = $result2->fetch_assoc())
                     {
                         echo "<li>";
                         echo "<a href = " . $row2['Link'] . ">" . $row2['Title'] . "</a>" ; // prints hyperlink with photo title
+                        echo "</li>";
                     }
                     echo "</ul>";
+                    echo "</div>";
                 }
                 else
                     echo "0 results <br>";
             }
-            echo "</ul>";
+//            echo "</ul>";
         }
         else
             echo "0 results <br>";
@@ -232,20 +209,47 @@ and open the template in the editor.
         }
         ?>
         
+        <!--php code to upload images to the filesystem for the database-->
         <?php
-        if(isset($_POST['submit'])) {
-            $imageName = $_POST['imageName'];
+        if (isset($_POST['submit'])) {
+            $imageName = $_POST['imageName']; //Get user's new image title
+            $myname = null;
+            $save_path=null;
+            
             if ($_FILES['image']['name']) {
-                $save_path = getcwd() . "\\nbproject\\DatabaseImages\\"; //Folder where images are stored
+                $save_path = getcwd() . "/nbproject/DatabaseImages/"; //Folder where images are stored
                 $ext = "." . pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION); //Get extenstion of image
                 $myname = $imageName . $ext; //Rename file here
                 move_uploaded_file($_FILES['image']['tmp_name'], $save_path . $myname);
-                echo "Image added successfully";
+                echo "<p style='color:green;'>Image added successfully</p>";
             } else {
-                echo "Error uploading file";
+                echo "Error uploading file<br/>";
+            }
+            
+            $sql = "INSERT INTO PHOTO(Title, Author, Date, Event, EventType, Link)
+            VALUES (' ".$myname." ', '', '', 'Amazing Event', '', '/nbproject/DatabaseImages/ ".$myname." ')";
+            if (!(mysqli_query($connect, $sql))) {
+                echo "Error inserting record: " . mysqli_error($connect) . "<br>";
             }
         }
         
         ?>
+        
+        <script>
+            var acc = document.getElementsByClassName("accordion");
+            var i;
+            
+            for(i=0; i<acc.length; i++) {
+                acc[i].onclick = function() {
+                    this.classList.toggle("active");
+                    var panel = this.nextElementSibling;
+                    if(panel.style.display === "block") {
+                        panel.style.display = "none";
+                    } else {
+                        panel.style.display = "block";
+                    }
+                }
+            }
+        </script>
     </body>
 </html>
