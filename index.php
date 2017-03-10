@@ -242,11 +242,14 @@ and open the template in the editor.
                 if (!(mysqli_query($connect, $sql))) {
                     echo "Error inserting tag: " . mysqli_error($connect) . "<br>";
                 }
-
+                
+                $message = "Image added successfully!";
                 echo "<p style='color:green;'>Image added successfully</p>";
+                echo "<script type='text/javascript'>alert('$message');</script>";
             } else {
                 echo "Error uploading file<br/>";
             }
+            header("Refresh:0");
         }
         ?>
 
